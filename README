@@ -1,0 +1,10 @@
+A reorganized workflow for FAANG mRNAseq analysis
+Including both Mare and Stallion data
+File names are in the form of:
+AHx_{tissue}_Rx.fastq.gz
+where:
+- AHx is the animal ID (AH1-AH4) (AH1, AH2: mares; AH3, AH4: stallions)
+- {tissue} is the tissue type; As of 3/11/21, stallions have fewer tissues sequenced than mares
+- Rx is read 1 or read 2
+
+Files are of illumina 2x150bp stranded short-read sequencing
