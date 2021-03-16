@@ -1,2 +1,5 @@
 data/
 ID.map
+.snakemake/
+slurm-*
+logs_slurm/
