@@ -16,6 +16,7 @@ import glob, os
 # Get current directory, we will prepend this path to ensure correct pathing in all rules
 workDir = str(os.getcwd())
 
+READS = ['R1', 'R2']
 SAMPLES = []
 REPS = {} # [tissue: [reps]]
 TISSUES = {} # {rep: [tissues]}
@@ -47,6 +48,6 @@ def getPartition(wildcards, resources):
         return 'low2'
 
 rule all:
-    input: expand(workDir + "/Results/fastQC/raw/{sample}_{read}_fastqc.zip", sample = SAMPLES, read = ['R1', 'R2'])
+    input: workDir + '/Results/fastQC/raw/multiqc_report.html'
 
 include: "rules/QC.smk"
