@@ -37,9 +37,8 @@ for file in glob.glob("data/*gz"):
 def getPartition(wildcards, resources):
     # Determine partition for each rule based on resources requested
     for key in resources.keys():
-#        print(key)
         if 'bmm' in key:
-            print('bmm')
+            return 'bmm'
         elif 'med' in key:
             return 'med2'
     if int(resources['mem_mb']) / int(resources['cpus']) > 4000:
@@ -48,6 +47,6 @@ def getPartition(wildcards, resources):
         return 'low2'
 
 rule all:
-    input: workDir + '/Results/fastQC/raw/multiqc_report.html'
+    input: workDir + '/Results/fastQC/trimming/multiqc_report.html'
 
 include: "rules/QC.smk"
