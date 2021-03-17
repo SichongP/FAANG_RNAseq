@@ -10,6 +10,5 @@ rule fastqc:
     version: "1.0"
     shell:
      """
-     echo {params.partition}
      fastqc -o {params.outDir} {input}
      """
