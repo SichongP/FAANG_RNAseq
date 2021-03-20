@@ -6,7 +6,7 @@ localrules: multiqc
 rule fastqc:
     input: workDir + '/data/{sample}_{read}.fastq.gz'
     output: workDir + '/Results/fastQC/raw/{sample}_{read}_fastqc.zip'
-    params: partition = getPartition, outDir = lambda wildcards: workDir + "/Results/fastQC/{}/".format(wildcards.stage)
+    params: partition = getPartition, outDir = workDir + "/Results/fastQC/raw/"
     resources: cpus = 1, mem_mb = 3000, time = 120
     conda: workDir + '/envs/fastqc.yaml'
     version: "1.0"
@@ -17,11 +17,12 @@ rule fastqc:
 
 rule multiqc:
     input: expand(workDir + '/Results/fastQC/{{stage}}/{sample}_{read}_fastqc.zip', sample = SAMPLES, read = READS)
-    output: workDir + '/Results/fastQC/{stage}/multiqc_report.html'
+    output: report(workDir + '/Results/fastQC/{stage}/multiqc_report.html', category = 'QC', subcategory = 'FASTQ QC', caption = workDir + '/report/multiqc.rst', htmlindex = 'multiqc_report.html')
     params: outDir = lambda wildcards: workDir + "/Results/fastQC/{}/".format(wildcards.stage), inDir = lambda wildcards: workDir + "/Results/fastQC/{}/".format(wildcards.stage)
     conda: workDir + '/envs/multiqc.yaml'
     shell:
      """
+     rm -r {params.outDir}multiqc_*
      multiqc -o {params.outDir} {params.inDir}
      """
 
