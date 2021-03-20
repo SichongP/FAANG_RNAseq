@@ -47,6 +47,8 @@ def getPartition(wildcards, resources):
         return 'low2'
 
 rule all:
-    input: workDir + '/Results/fastQC/trimming/multiqc_report.html'
+    input: 
+        workDir + '/Results/fastQC/trimming/multiqc_report.html',
+        workDir + '/Results/fastQC/raw/multiqc_report.html'
 
 include: "rules/QC.smk"
