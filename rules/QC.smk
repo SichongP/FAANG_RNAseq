@@ -29,8 +29,8 @@ rule multiqc:
 rule trim:
     input: expand(workDir + '/data/{{sample}}_{read}.fastq.gz', read = READS)
     output: 
-        r1 = temp(workDir + '/Results/trimming/{sample}_R1.fq.gz'),
-        r2 = temp(workDir + '/Results/trimming/{sample}_R2.fq.gz'),
+        r1 = workDir + '/Results/trimming/{sample}_R1.fq.gz',
+        r2 = workDir + '/Results/trimming/{sample}_R2.fq.gz',
         qc1 = workDir + '/Results/fastQC/trimming/{sample}_R1_fastqc.zip',
         qc2 = workDir + '/Results/fastQC/trimming/{sample}_R2_fastqc.zip'
     conda: workDir + '/envs/trim_galore.yaml'
