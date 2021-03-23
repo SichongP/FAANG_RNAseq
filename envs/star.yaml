@@ -1,0 +1,6 @@
+name: STAR
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+prefix: /home/pengsc/bin/miniconda3/envs/STAR
