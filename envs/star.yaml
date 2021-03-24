@@ -1,6 +1,8 @@
-name: STAR
+name: star
 channels:
   - conda-forge
   - bioconda
   - defaults
-prefix: /home/pengsc/bin/miniconda3/envs/STAR
+dependencies:
+  - star=2.7.3a=0
+prefix: /home/pengsc/bin/miniconda3/envs/star
