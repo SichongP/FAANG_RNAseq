@@ -18,7 +18,7 @@ stats['tissue'] = [i[1] for i in list(stats.index.str.split('_', expand = True))
 stats = stats.reset_index().drop('index', axis =1).iloc[:,list(range(-2,32))]
 print("Plotting...")
 
-fig, ax = plt.subplots(1, 2, figsize = (35,15))
+fig1, ax = plt.subplots(1, 2, figsize = (35,15))
 plt.subplots_adjust(wspace=0.05)
 map_total = stats[['Uniquely mapped reads number', 'rep', 'tissue']]
 map_total.loc[:,'Uniquely mapped reads number'] = map_total['Uniquely mapped reads number'].apply(lambda value: int(value))
@@ -31,10 +31,10 @@ map_rate.loc[:,'Uniquely mapped reads %'] = map_rate['Uniquely mapped reads %'].
 sns.heatmap(map_rate.pivot(columns = 'rep', values = 'Uniquely mapped reads %', index = 'tissue'), robust = True, cmap = 'viridis', ax = ax[1])
 ax[1].yaxis.set()
 ax[1].set_title('Unique Mapping Rate', fontsize=20)
-fig.text(.8, .05, 'Missing values are indicated by blanks. This means no RNAseq data of this tissue is available from this particular horse', ha='right', fontsize = 15)
-output_figs.append(fig)
+fig1.text(.8, .05, 'Missing values are indicated by blanks. This means no RNAseq data of this tissue is available from this particular horse', ha='right', fontsize = 15)
+output_figs.append(fig1)
 
-fig, ax = plt.subplots(1, 2, figsize = (35,15))
+fig2, ax = plt.subplots(1, 2, figsize = (35,15))
 plt.subplots_adjust(wspace=0.05)
 multi_map_total = stats[['Number of reads mapped to multiple loci', 'rep', 'tissue']]
 multi_map_total.loc[:,'Number of reads mapped to multiple loci'] = multi_map_total['Number of reads mapped to multiple loci'].apply(lambda value: int(value))
@@ -47,15 +47,35 @@ multi_map_rate.loc[:,'% of reads mapped to multiple loci'] = multi_map_rate['% o
 sns.heatmap(multi_map_rate.pivot(columns = 'rep', values = '% of reads mapped to multiple loci', index = 'tissue'), robust = True, cmap = 'viridis', vmin = 0, ax = ax[1])
 ax[1].yaxis.set()
 ax[1].set_title('Multi-mapping Rate', fontsize=20)
-fig.text(.8, .05, 'Missing values are indicated by blanks. This means no RNAseq data of this tissue is available from this particular horse', ha='right', fontsize = 15)
-output_figs.append(fig)
+fig2.text(.8, .05, 'Missing values are indicated by blanks. This means no RNAseq data of this tissue is available from this particular horse', ha='right', fontsize = 15)
+output_figs.append(fig2)
+
+fig3, ax = plt.subplots(1, 2, figsize = (35,15))
+plt.subplots_adjust(wspace=0.05)
+
+multi_map_total = stats[['% of reads unmapped: other', 'rep', 'tissue']]
+multi_map_total.loc[:,'% of reads unmapped: other'] = multi_map_total['% of reads unmapped: other'].apply(lambda value: float(value.replace('%','')) / 100)
+sns.heatmap(multi_map_total.pivot(columns = 'rep', values = '% of reads unmapped: other', index = 'tissue'), robust = True, cmap = 'viridis', ax = ax[0])
+labels = list(multi_map_total.pivot(columns = 'rep', values = '% of reads unmapped: other', index = 'tissue').index)
+ax[0].yaxis.set(ticks=np.arange(0.5, len(labels)), ticklabels=labels)
+ax[0].set_title('fraction of reads unmapped: other', fontsize=20)
+
+multi_map_rate = stats[['% of reads unmapped: too short', 'rep', 'tissue']]
+multi_map_rate.loc[:,'% of reads unmapped: too short'] = multi_map_rate['% of reads unmapped: too short'].apply(lambda value: float(value.replace('%','')) / 100)
+sns.heatmap(multi_map_rate.pivot(columns = 'rep', values = '% of reads unmapped: too short', index = 'tissue'), robust = True, cmap = 'viridis', vmin = 0, ax = ax[1])
+
+ax[1].yaxis.set()
+ax[1].set_title('fraction of reads unmapped: too short', fontsize=20)
+
+fig3.text(.8, .05, 'Missing values are indicated by blanks. This means no RNAseq data of this tissue is available from this particular horse', ha='right', fontsize = 15)
+output_figs.append(fig3)
 
 print("Saving to output...")
 
 from matplotlib.backends.backend_pdf import FigureCanvasPdf, PdfPages
 with PdfPages(snakemake.output['pdf']) as pages:
     for i in output_figs:
-        canvas = FigureCanvasPdf(fig)
+        canvas = FigureCanvasPdf(i)
         canvas.print_figure(pages)
 
 stats.to_csv(snakemake.output['csv'], index = False)
