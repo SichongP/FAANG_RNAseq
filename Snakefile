@@ -1,4 +1,4 @@
-
+configfile: "config.yaml"
 
 ## Process data files
 ## Format: {rep}_{tissue}_{read}.fastq.gz
@@ -22,7 +22,7 @@ REPS = {} # [tissue: [reps]]
 TISSUES = {} # {rep: [tissues]}
 
 
-for file in glob.glob("data/*gz"):
+for file in glob.glob("data/*R1*gz"):
     rep, tissue, read = file.replace('.fastq.gz', '').replace('data/','').split('_')
     SAMPLES.append('_'.join([rep, tissue]))
     if rep not in TISSUES:
@@ -49,6 +49,9 @@ def getPartition(wildcards, resources):
 rule all:
     input: 
         workDir + '/Results/fastQC/trimming/multiqc_report.html',
-        workDir + '/Results/fastQC/raw/multiqc_report.html'
+        workDir + '/Results/fastQC/raw/multiqc_report.html',
+        expand("Results/mapping/{sample}.bam", sample = SAMPLES),
+        "Results/Reports/MappingReport.pdf"
 
 include: "rules/QC.smk"
+include: "rules/Mapping.smk"
