@@ -4,7 +4,7 @@ rule RefGuidedAlignment:
         r1 = workDir + '/Results/trimming/{sample}_R1.fq.gz',
         r2 = workDir + '/Results/trimming/{sample}_R2.fq.gz'
     output:
-        bam = "Results/mapping/{sample}.bam",
+        bam = temp("Results/mapping/{sample}.bam"),
         stat = "Results/mapping/{sample}Log.final.out"
     params:
         partition = getPartition,
@@ -39,3 +39,29 @@ rule plotMappingRate:
     resources: mem_mb = 8000, cpus = 1, time_min = 60, mem_mb_bmm = 8000, cpus_bmm = 1
     params: partition = getPartition
     script: workDir + "/scripts/mappingReport.py"
+
+rule markDuplicate:
+    input: "Results/mapping/{sample}.bam"
+    output: "Results/mapping/{sample}.markDup.bam"
+    conda: workDir + "/envs/sambamba.yaml"
+    resources: mem_mb = 10000, cpus = 4, time_min = 240, mem_mb_bmm = 10000, cpus_bmm = 4
+    params: partition = getPartition
+    shell:
+     """
+     MYTMPDIR=/scratch/pengsc/$SLURM_JOBID
+     cleanup() {{ rm -rf $MYTMPDIR; }}
+     trap cleanup EXIT
+     mkdir -p $MYTMPDIR
+     sambamba markdup -t {resources.cpus} --tmpdir=$MYTMPDIR {input} {output} 
+     """
+
+rule indexBAM:
+    input: "Results/mapping/{sample}.markDup.bam"
+    output: "Results/mapping/{sample}.markDup.bam.bai"
+    resources: mem_mb = 6000, cpus = 1, time_min = 240
+    conda: workDir + "/envs/samtools.yaml"
+    params: partition = getPartition
+    shell:
+     """
+     samtools index {input}
+     """
