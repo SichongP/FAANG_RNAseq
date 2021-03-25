@@ -31,7 +31,7 @@ map_rate.loc[:,'Uniquely mapped reads %'] = map_rate['Uniquely mapped reads %'].
 sns.heatmap(map_rate.pivot(columns = 'rep', values = 'Uniquely mapped reads %', index = 'tissue'), robust = True, cmap = 'viridis', ax = ax[1])
 ax[1].yaxis.set()
 ax[1].set_title('Unique Mapping Rate', fontsize=20)
-fig.text(.8, .05, 'Missing values are indicated by blanks. This means no RNAseq data of this tissue is available from this particular horse', ha='right', fontsize = 15)
+fig.text(.8, .05, 'Missing values are indicated by blanks. This means no RNAseq data of this tissue is not available from this particular horse', ha='right', fontsize = 15)
 output_figs.append(fig)
 
 fig, ax = plt.subplots(1, 2, figsize = (35,15))
@@ -47,7 +47,7 @@ multi_map_rate.loc[:,'% of reads mapped to multiple loci'] = multi_map_rate['% o
 sns.heatmap(multi_map_rate.pivot(columns = 'rep', values = '% of reads mapped to multiple loci', index = 'tissue'), robust = True, cmap = 'viridis', vmin = 0, ax = ax[1])
 ax[1].yaxis.set()
 ax[1].set_title('Multi-mapping Rate', fontsize=20)
-fig.text(.8, .05, 'Missing values are indicated by blanks. This means no RNAseq data of this tissue is available from this particular horse', ha='right', fontsize = 15)
+fig.text(.8, .05, 'Missing values are indicated by blanks. This means no RNAseq data of this tissue is not available from this particular horse', ha='right', fontsize = 15)
 output_figs.append(fig)
 
 print("Saving to output...")
