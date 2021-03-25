@@ -4,3 +4,4 @@ ID.map
 slurm-*
 logs_slurm/
 Notes
+.ipynb_checkpoints/
