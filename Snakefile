@@ -50,7 +50,8 @@ rule all:
     input: 
         workDir + '/Results/fastQC/trimming/multiqc_report.html',
         workDir + '/Results/fastQC/raw/multiqc_report.html',
-        expand("Results/mapping/{sample}.bam", sample = SAMPLES),
+        expand("Results/mapping/{sample}.markDup.bam", sample = SAMPLES),
+        expand("Results/mapping/{sample}.markDup.bam.bai", sample = SAMPLES),
         "Results/Reports/MappingReport.pdf"
 
 include: "rules/QC.smk"
