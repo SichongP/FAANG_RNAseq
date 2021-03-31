@@ -4,7 +4,7 @@
 localrules: multiqc
 
 rule fastqc:
-    input: workDir + '/data/{sample}_{read}.fastq.gz'
+    input: workDir + '/data/RNAseq/{sample}_{read}.fastq.gz'
     output: workDir + '/Results/fastQC/raw/{sample}_{read}_fastqc.zip'
     params: partition = getPartition, outDir = workDir + "/Results/fastQC/raw/"
     resources: cpus = 1, mem_mb = 3000, time = 120
@@ -27,7 +27,7 @@ rule multiqc:
      """
 
 rule trim:
-    input: expand(workDir + '/data/{{sample}}_{read}.fastq.gz', read = READS)
+    input: expand(workDir + '/data/RNAseq/{{sample}}_{read}.fastq.gz', read = READS)
     output: 
         r1 = workDir + '/Results/trimming/{sample}_R1.fq.gz',
         r2 = workDir + '/Results/trimming/{sample}_R2.fq.gz',

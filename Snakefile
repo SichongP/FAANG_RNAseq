@@ -22,7 +22,7 @@ REPS = {} # [tissue: [reps]]
 TISSUES = {} # {rep: [tissues]}
 
 
-for file in glob.glob("data/*R1*gz"):
+for file in glob.glob("data/RNAseq/*R1*gz"):
     rep, tissue, read = file.replace('.fastq.gz', '').replace('data/','').split('_')
     SAMPLES.append('_'.join([rep, tissue]))
     if rep not in TISSUES:
