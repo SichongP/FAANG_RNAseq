@@ -37,9 +37,9 @@ for file in glob.glob("data/*R1*gz"):
 def getPartition(wildcards, resources):
     # Determine partition for each rule based on resources requested
     for key in resources.keys():
-        if 'bmm' in key:
+        if 'bmm' in key and int(resources['cpus_bmm']) > 0:
             return 'bmm'
-        elif 'med' in key:
+        elif 'med' in key and int(resources['cpus_med']) > 0:
             return 'med2'
     if int(resources['mem_mb']) / int(resources['cpus']) > 4000:
         return 'bml'
