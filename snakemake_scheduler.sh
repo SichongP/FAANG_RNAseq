@@ -1,11 +1,11 @@
 #! /bin/bash -login
 #SBATCH -J FAANG_RNA
-#SBATCH -t 10-00:00:00
+#SBATCH -t 4-00:00:00
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH -c 1
 #SBATCH -p high2
-#SBATCH --mem=3gb
+#SBATCH --mem=4gb
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=scpeng@ucdavis.edu
 
