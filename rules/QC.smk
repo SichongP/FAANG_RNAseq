@@ -22,7 +22,7 @@ rule multiqc:
     conda: workDir + '/envs/multiqc.yaml'
     shell:
      """
-     rm -r {params.outDir}multiqc_*
+     rm -rf {params.outDir}multiqc_*
      multiqc -o {params.outDir} {params.inDir}
      """
 
